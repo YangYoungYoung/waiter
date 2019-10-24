@@ -1,0 +1,71 @@
+<!--pages/table/table.wxml-->
+<view class="container">
+  <view class="table-size">
+    <!-- <view class="{{select?'item-size-select':'item-size'}}" bindtap="selectAll">全部</view> -->
+    <block wx:for='{{tableSize}}' wx:key='item'>
+      <view class="{{item.select?'item-size-select':'item-size'}}" data-index="{{index}}" bindtap="selectSize">{{item.specification}}</view>
+    </block>
+  </view>
+  <view class="line"></view>
+  <view class="floor-size">
+    <block wx:if="{{floor}}">
+      <picker bindchange="bindPickerChange" value="{{pickerIndex}}" range="{{floor}}" range-key="floor">
+        <view class="{{floorSelect?'item-size-select':'item-size'}}" bindtap="chooseFloor">楼层 ▼{{floor[pickerIndex].floor}}</view>
+      </picker>
+    </block>
+    <view class="area-view">
+      <block wx:for='{{area}}' wx:key='item'>
+        <view class="{{item.select?'item-size-select':'item-size'}}" data-id="{{item.id}}" bindtap="chooseArea">{{item.area}}</view>
+      </block>
+    </view>
+
+  </view>
+  <view class="line"></view>
+  <view class="radio-view">
+    <radio-group class="radio" bindchange="updataRadio">
+      <view wx:for="{{statusArray}}" wx:key='{{index}}'>
+        <radio value="{{item.id}}" checked="{{item.checked}}">{{item.name}}</radio>
+      </view>
+    </radio-group>
+  </view>
+
+
+  <scroll-view class='scroll' scroll-y style="height:100%;">
+    <view class="scroll-view">
+      <view class="table-view">
+        <block wx:for='{{tableList}}' wx:key='item'>
+          <block wx:if="{{item.status==0}}">
+            <view class="table-item-free">
+              <text class="table-name">{{item.tableName}}</text>
+              <view class="table-bottom">
+                <text class="bottome-text" style="margin-left:20rpx;">{{item.specificationName}}</text>
+                <text class="bottome-text" style="margin-right:20rpx;">空闲</text>
+              </view>
+            </view>
+          </block>
+          <block wx:elif="{{item.status==1}}">
+            <view class="table-item-notorder">
+              <text class="table-name">2号桌{{item.name}}</text>
+              <!-- <view clas、s="table-bottom"> -->
+              <text class="bottome-text" style="margin-top:30rpx;">未点餐</text>
+              <!-- <text class="bottome-text">空闲</text> -->
+              <!-- </view> -->
+            </view>
+          </block>
+          <block wx:elif="{{item.status==2}}">
+            <view class="table-item-dine">
+              <text class="table-name">{{item.name}}</text>
+              <text class="bottome-text" style="margin-top:30rpx;color:#a4144e">￥285</text>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="table-item-clean">
+              <text class="table-name">{{item.name}}</text>
+              <text class="bottome-text" style="margin-top:30rpx;">待清台</text>
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+  </scroll-view>
+</view>

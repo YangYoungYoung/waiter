@@ -1,0 +1,15 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <image class="icon" src="../images/icon.png"></image>
+
+  <view class="name-view">
+    <image class="name-icon" src="../images/name_icon.png"></image>
+    <input class="name-input" placeholder='请输入工号' bindinput="getName"></input>
+  </view>
+
+  <view class="name-view">
+    <image class="name-icon" src="../images/pwd_icon.png"></image>
+    <input class="name-input" placeholder='请输入密码' bindinput="getPwd" password='true'></input>
+  </view>
+  <button class="submit">提交</button>
+</view>
