@@ -1,26 +1,29 @@
 <!--pages/table/table.wxml-->
 <view class="container">
-  <view class="table-size">
-    <!-- <view class="{{select?'item-size-select':'item-size'}}" bindtap="selectAll">全部</view> -->
-    <block wx:for='{{tableSize}}' wx:key='item'>
-      <view class="{{item.select?'item-size-select':'item-size'}}" data-index="{{index}}" bindtap="selectSize">{{item.specification}}</view>
-    </block>
-  </view>
-  <view class="line"></view>
-  <view class="floor-size">
-    <block wx:if="{{floor}}">
-      <picker bindchange="bindPickerChange" value="{{pickerIndex}}" range="{{floor}}" range-key="floor">
-        <view class="{{floorSelect?'item-size-select':'item-size'}}" bindtap="chooseFloor">楼层 ▼{{floor[pickerIndex].floor}}</view>
-      </picker>
-    </block>
-    <view class="area-view">
-      <block wx:for='{{area}}' wx:key='item'>
-        <view class="{{item.select?'item-size-select':'item-size'}}" data-id="{{item.id}}" bindtap="chooseArea">{{item.area}}</view>
+  <block wx:if='{{tableSize}}'>
+    <view class="table-size">
+      <!-- <view class="{{select?'item-size-select':'item-size'}}" bindtap="selectAll">全部</view> -->
+      <block wx:for='{{tableSize}}' wx:key='item'>
+        <view class="{{item.select?'item-size-select':'item-size'}}" data-index="{{index}}" bindtap="selectSize">{{item.specification}}</view>
       </block>
     </view>
-
-  </view>
-  <view class="line"></view>
+    <view class="line"></view>
+  </block>
+  <block wx:if='{{floor||area}}'>
+    <view class="floor-size">
+      <block wx:if="{{floor}}">
+        <picker bindchange="bindPickerChange" value="{{pickerIndex}}" range="{{floor}}" range-key="floor">
+          <view class="{{floorSelect?'item-size-select':'item-size'}}" bindtap="chooseFloor">楼层 ▼{{floor[pickerIndex].floor}}</view>
+        </picker>
+      </block>
+      <view class="area-view">
+        <block wx:for='{{area}}' wx:key='item'>
+          <view class="{{item.select?'item-size-select':'item-size'}}" data-id="{{item.id}}" bindtap="chooseArea">{{item.area}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="line"></view>
+  </block>
   <view class="radio-view">
     <radio-group class="radio" bindchange="updataRadio">
       <view wx:for="{{statusArray}}" wx:key='{{index}}'>
@@ -35,7 +38,8 @@
       <view class="table-view">
         <block wx:for='{{tableList}}' wx:key='item'>
           <block wx:if="{{item.status==0}}">
-            <view class="table-item-free">
+            <!-- 空闲桌位 -->
+            <view class="table-item-free" bindtap="showAction" data-id="{{item.id}}" data-status="{{item.status}}">
               <text class="table-name">{{item.tableName}}</text>
               <view class="table-bottom">
                 <text class="bottome-text" style="margin-left:20rpx;">{{item.specificationName}}</text>
@@ -43,24 +47,27 @@
               </view>
             </view>
           </block>
+          <!-- 未点餐桌位 -->
           <block wx:elif="{{item.status==1}}">
-            <view class="table-item-notorder">
-              <text class="table-name">2号桌{{item.name}}</text>
+            <view class="table-item-notorder" bindtap="showAction" data-id="{{item.id}}" data-status="{{item.status}}">
+              <text class="table-name">{{item.tableName}}</text>
               <!-- <view clas、s="table-bottom"> -->
               <text class="bottome-text" style="margin-top:30rpx;">未点餐</text>
               <!-- <text class="bottome-text">空闲</text> -->
               <!-- </view> -->
             </view>
           </block>
+          <!-- 正在用餐 -->
           <block wx:elif="{{item.status==2}}">
-            <view class="table-item-dine">
-              <text class="table-name">{{item.name}}</text>
-              <text class="bottome-text" style="margin-top:30rpx;color:#a4144e">￥285</text>
+            <view class="table-item-dine" bindtap="showAction" data-id="{{item.id}}" data-status="{{item.status}}">
+              <text class="table-name">{{item.tableName}}</text>
+              <text class="bottome-text" style="margin-top:30rpx;color:#a4144e">￥{{item.price}}/{{item.population}}人</text>
             </view>
           </block>
+          <!-- 待清台 -->
           <block wx:else>
-            <view class="table-item-clean">
-              <text class="table-name">{{item.name}}</text>
+            <view class="table-item-clean" bindtap="showAction" data-id="{{item.id}}" data-status="{{item.status}}">
+              <text class="table-name">{{item.tableName}}</text>
               <text class="bottome-text" style="margin-top:30rpx;">待清台</text>
             </view>
           </block>
@@ -68,4 +75,21 @@
       </view>
     </view>
   </scroll-view>
+  <van-action-sheet show="{{ showAction }}" actions="{{ actions }}" bind:close="onActionClose" bind:select="onActionSelect" cancel-text="取消" overlay="true" close-on-click-overlay="true" bind:cancel="onActionClose" />
+
+  <!--弹窗-->
+  <view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+  <view class="modal-dialog" wx:if="{{showModal}}">
+    <view class="modal-title">就餐人数</view>
+    <view class="modal-content">
+      <view class="modal-input">
+        <input placeholder-class="input-holder" type="number" maxlength="10" bindinput="inputChange" class="input" placeholder="请输入实际就餐人数"></input>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+      <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+    </view>
+  </view>
+
 </view>

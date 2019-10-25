@@ -1,0 +1,25 @@
+<!--pages/form/form.wxml-->
+<scroll-view class='scroll' scroll-y style="height:100%;">
+
+  <view class="container">
+    <block wx:for="{{orderList}}" wx:key='item'>
+      <view class="list-item">
+        <view class="item-left">
+          <image class="item-img" src="{{item.dishImages}}"></image>
+          <view class="name-price">
+          <text class="item-name">{{item.dishName}}</text>
+          <text class="item-price">￥{{item.totalPrice}}</text>
+          </view>
+          
+        </view>
+        <view class="item-right">{{item.number}}份</view>
+      </view>
+      <view class="line"></view>
+    </block>
+
+    <view class="foot">
+      <view class="foot-left" bindtap="toTable">首页</view>
+      <view class="foot-right" bindtap="toAddOrder">加餐</view>
+    </view>
+  </view>
+</scroll-view>

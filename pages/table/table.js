@@ -6,6 +6,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+    peopleNumber: '', //就餐人数
+    tableId:'',
+    showAction: false,
     floorId: '',
     tableSizeId: '',
     statusId: '',
@@ -50,11 +53,16 @@ Page({
       },
       {
         id: 3,
-        name: '订单详情',
+        name: '加餐',
         disabled: false
       },
       {
         id: 4,
+        name: '订单详情',
+        disabled: false
+      },
+      {
+        id: 5,
         name: '清台',
         disabled: false
       },
@@ -297,7 +305,238 @@ Page({
           })
         }
       });
-  }
+  },
+  //弹出action
+  showAction(e) {
+    var that = this;
+    var status = e.currentTarget.dataset.status;
+    //点击桌位的Id
+    var tableId = e.currentTarget.dataset.id;
+    // that.setData({
+    //   index: index
+    // })
+    that.setData({
+      tableId: tableId
+    })
+    console.log("status is:", status);
+    // console.log("index is:", index);
+    var actions = that.data.actions;
+    //根据桌位状态展示不同的菜单可选项
+    if (status == 0) {
+      //空闲状态，只可以开桌
+      for (var i = 0; i < actions.length; i++) {
+        if (i != 0) {
+          actions[i].disabled = true;
+        } else {
+          actions[i].disabled = false;
+        }
+      }
+      that.setData({
+        actions: actions
+      })
+    } else if (status == 1) {
+      //当前为未点餐状态，可以点餐和清台
+      for (var i = 0; i < actions.length; i++) {
+
+        if (i == 1 || i == 4) {
+          // console.log("dangqina ");
+          actions[i].disabled = false;
+        } else {
+          actions[i].disabled = true;
+        }
+      }
+      that.setData({
+        actions: actions
+      })
+    } else if (status == 2) {
+      //当前为进行中状态,可以加餐，清台，查看订单状态
+      for (var i = 0; i < actions.length; i++) {
+
+        if (i == 2 || i == 3 || i == 4) {
+          actions[i].disabled = false;
+        } else {
+          actions[i].disabled = true;
+        }
+      }
+      that.setData({
+        actions: actions
+      })
+    } else {
+      //当前为待清台状态，只可以清台
+      for (var i = 0; i < actions.length; i++) {
+
+        if (i != 4) {
+          actions[i].disabled = false;
+        } else {
+          actions[i].disabled = true;
+        }
+      }
+      that.setData({
+        actions: actions
+      })
+    }
+    this.setData({
+      showAction: true
+    });
+  },
+  //关闭action
+  onActionClose: function() {
+    this.setData({
+      showAction: false
+    })
+  },
+  //选择actionSheet
+  onActionSelect: function(event) {
+    console.log('菜单action：', event.detail.id);
+    var id = event.detail.id;
+    var that = this;
+    switch (id) {
+      case 1:
+        //当前为开台的时候,弹出就餐人数的弹窗
+        that.showDialogBtn();
+        break;
+      case 2:
+        //当前为点餐，跳转到点餐的页面
+        console.log("当前为点餐，跳转到点餐的页面");
+        wx.navigateTo({
+          url: '../menu/menu',
+        })
+        break;
+      case 3:
+        //当前为加餐
+        console.log("当前为加餐");
+        wx.navigateTo({
+          url: '../menu/menu',
+        })
+        break;
+        // case 4:
+        //   //当前为划菜
+        //   console.log("当前为划菜");
+        //   wx.navigateTo({
+        //     url: '../order/order',
+        //   })
+        //   break;
+        // case 5:
+        //   //当前为起菜
+        //   console.log("当前为起菜");
+        //   that.qiCai();
+        //   break;
+        // case 6:
+        //   //当前为顾客转台
+        //   console.log("当前为顾客转台");
+        //   that.showChangeModalFunction();
+        //   let index = that.data.index;
+        //   let diningTableList = that.data.diningTableList;
+        //   let fromDiningTableId = diningTableList[index].id;
+        //   //查询当前可用的桌位
+        //   let changeSeatNumber = that.data.changeSeatNumber;
+        //   let changeRegion = that.data.changeRegion;
+        //   that.changeQueryTable(0, 0);
+
+        //   that.setData({
+        //     fromDiningTableId: fromDiningTableId
+        //   })
+
+        //   break;
+      case 4:
+        //当前为订单详情
+        console.log("当前为订单详情");
+        wx.navigateTo({
+          url: '../order/order',
+        })
+        break;
+      case 5:
+        //当前为清台
+        console.log("当前为清台");
+        that.clearDiningTable();
+        break;
+      default:
+        break;
+    }
+    that.onActionClose();
+  },
 
 
+
+  /**
+   * 弹窗
+   */
+  showDialogBtn: function() {
+    this.setData({
+      showModal: true
+    })
+  },
+  /**
+   * 弹出框蒙层截断touchmove事件
+   */
+  preventTouchMove: function() {},
+  /**
+   * 隐藏模态对话框
+   */
+  hideModal: function() {
+    this.setData({
+      showModal: false
+    });
+  },
+  /**
+   * 对话框取消按钮点击事件
+   */
+  onCancel: function() {
+    this.hideModal();
+    this.openTable();
+  },
+  /**
+   * 实际就餐人数对话框确认按钮点击事件
+   */
+  onConfirm: function() {
+    this.openTable();
+    this.hideModal();
+  },
+  //开台的接口
+  openTable: function() {
+    let that = this;
+
+    let url = "table/updateTableStatus"
+    let method = "GET"
+    // let index = that.data.index;
+    // let diningTableList = that.data.diningTableList;
+    let peopleNumber = that.data.peopleNumber; //实际就餐人数
+    let tableId = that.data.tableId;
+    console.log('tableId is:', tableId);
+    var params = {
+      shopId: 1,
+      population: peopleNumber,
+      status:1,
+      tableId: tableId                                
+    }
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        //后台交互
+        if (res.data.code == 200) {
+          common.showTip("开台成功", "success");
+          that.onShow();
+          that.onActionClose();
+        } else {
+          var message = res.data.message
+          common.showTip(message, "loading");
+        }
+      }).catch((errMsg) => {
+        wx.hideLoading();
+        console.log(errMsg); //错误提示信息
+        wx.showToast({
+          title: '网络错误',
+          icon: 'loading',
+          duration: 1500,
+        })
+      });
+  },
+  //获取输入框里面的值
+  inputChange: function(e) {
+    this.setData({
+      peopleNumber: e.detail.value
+    })
+  },
 })

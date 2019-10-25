@@ -2,7 +2,7 @@
 const app = getApp()
 
 // var API_URL = 'https://api.ugo365.xyz/api/';
-var API_URL = 'https://192.168.5.141:443/';
+var API_URL = 'https://192.168.5.173:443/';
 
 // var API_URL = 'https://www.congyue88.com/congyue/';
 // var API_URL = 'https://shop.congyue88.com/congyue/';
