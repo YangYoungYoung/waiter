@@ -1,6 +1,7 @@
 // pages/cart/cart.js
 var common = require("../../utils/common.js");
 var network = require("../../utils/network.js");
+var tableId = wx.getStorageSync('tableId');
 Page({
 
   /**
@@ -100,9 +101,10 @@ Page({
   getList: function() {
     let that = this;
     let url = '/cart/select'
+
     var params = {
       shopId: 1,
-      tableId: '1'
+      tableId: tableId
     }
     let method = "GET";
     wx.showLoading({
@@ -360,7 +362,7 @@ Page({
     var params = {
       shopId: 1,
       // openId: '',
-      tableId: 1,
+      tableId: tableId,
       dishArray: dishArray,
       remark: remark
     }
@@ -532,6 +534,5 @@ Page({
       textAreaBlur: e.detail.value,
     })
   }
-
 
 })

@@ -1,6 +1,7 @@
 // pages/menu/menu.js
 var common = require("../../utils/common.js");
 var network = require("../../utils/network.js");
+var tableId = wx.getStorageSync('tableId');
 Page({
 
   /**
@@ -89,6 +90,7 @@ Page({
     console.log('dishId is:', dishId);
     var dishImage = goods[parentIndex].dish[index].dishImage;
     var dishPrice = goods[parentIndex].dish[index].dishPrice;
+    // let tableId = wx.getStorageSync('tableId');
     let url = 'cart/add'
 
     var params = {
@@ -98,7 +100,7 @@ Page({
       dishName: dishName,
       number: number,
       dishPrice: dishPrice,
-      tableId: '1'
+      tableId: tableId
     }
     let method = "POST";
     // wx.showLoading({
@@ -132,13 +134,13 @@ Page({
     // var number = goods[parentIndex].productList[index].number;
     var mark = 'a' + index + 'b' + parentIndex;
     var dishId = goods[parentIndex].dish[index].id;
+    
     console.log('dishId is:', dishId);
     let url = 'cart/reduceNumber'
     var params = {
       shopId: 1,
       dishId: dishId,
-
-      tableId: '1'
+      tableId: tableId
     }
     let method = "GET";
     // wx.showLoading({

@@ -318,7 +318,8 @@ Page({
     that.setData({
       tableId: tableId
     })
-    console.log("status is:", status);
+    wx.setStorageSync('tableId', tableId);
+    // console.log("status is:", status);
     // console.log("index is:", index);
     var actions = that.data.actions;
     //根据桌位状态展示不同的菜单可选项
