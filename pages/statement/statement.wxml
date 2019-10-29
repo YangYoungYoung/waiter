@@ -1,0 +1,40 @@
+<!--pages/statement/statement.wxml-->
+<view class="container">
+  <view class="title">{{nowDate}}</view>
+  <view class="line"></view>
+  <view class="best-view">
+    <image class="best-icon" src="../images/boss_icon.png"></image>
+    <text class="best-dishes">最佳菜品</text>
+  </view>
+  <view class="data-view">
+    <view class="pick-data">
+      本日 ▼
+    </view>
+
+    <view class="check-data">
+      <image class="data-icon" src="../images/data_icon.png"></image>
+      <text class="data-text">2019/10/5——2019/10/5</text>
+    </view>
+  </view>
+  <view class="line"></view>
+  <view class="dishList-view-title">
+    <text class="dishList-title-text" style="margin-left:36rpx;">名称</text>
+    <view class="dishList-title-right">
+      <text class="dishList-title-text" style="margin-right:168rpx;">价格</text>
+      <text class="dishList-title-text" style="margin-right:36rpx;">数量</text>
+    </view>
+  </view>
+  <view class="line"></view>
+  <view class="dishList-view">
+    <block wx:for="{{dishList}}" wx:key='item'>
+      <view class="dish-item">
+        <view class="dish-name" style="margin-left:36rpx;">{{item.dishName}}</view>
+        <view class="dish-right">
+          <view style="margin-right:168rpx;">{{item.name}}</view>
+          <view>{{item.number}}</view>
+        </view>
+      </view>
+      <view class="line"></view>
+    </block>
+  </view>
+</view>

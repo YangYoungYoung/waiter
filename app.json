@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/statement/statement",
     "pages/table/table",
     "pages/form/form",
     "pages/cart/cart",

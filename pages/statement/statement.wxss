@@ -1,0 +1,136 @@
+/* pages/statement/statement.wxss */
+
+page {
+  width: 100%;
+  height: 100%;
+  background-color: #4f5065;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  width: 100%;
+  height: 80rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: #262d49;
+}
+
+.line {
+  width: 100%;
+  height: 2rpx;
+  background-color: #62697c;
+}
+
+.best-view {
+  width: 100%;
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #262d49;
+}
+
+.best-icon {
+  width: 51rpx;
+  height: 44rpx;
+  margin-top: 20rpx;
+}
+
+.best-dishes {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.data-view {
+  width: 100%;
+  height: 114rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 28rpx;
+  color: #fff;
+  text-align: center;
+}
+
+.pick-data {
+  width: 140rpx;
+  height: 70rpx;
+  background-color: #3e3f51;
+  border-radius: 35rpx;
+  margin-left: 36rpx;
+  line-height: 70rpx;
+}
+
+.check-data {
+  width: 410rpx;
+  height: 70rpx;
+  background-color: #3e3f51;
+  border-radius: 35rpx;
+  margin-right: 36rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.data-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-left: 20rpx;
+}
+
+.data-text {
+  font-size: 28rpx;
+  color: #fff;
+  margin-left: 10rpx;
+}
+
+.dishList-view-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100rpx;
+  justify-content: space-between;
+}
+
+.dishList-title-text {
+  font-size: 30rpx;
+  color: #fff;
+}
+
+.dishList-view{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dish-item{
+  display: flex;
+  flex-direction: row;
+  height: 100rpx;
+  width: 678rpx;
+  justify-content: space-between;
+  font-size: 30rpx;
+  align-items: center;
+  color: #fff;
+}
+
+.dish-right{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
