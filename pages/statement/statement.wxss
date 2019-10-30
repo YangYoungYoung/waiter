@@ -112,13 +112,13 @@ page {
   color: #fff;
 }
 
-.dishList-view{
+.dishList-view {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.dish-item{
+.dish-item {
   display: flex;
   flex-direction: row;
   height: 100rpx;
@@ -129,8 +129,44 @@ page {
   color: #fff;
 }
 
-.dish-right{
+.dish-right {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.turnover-view {
+  width: 100%;
+  height: 166rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30rpx;
+  color: #fff;
+}
+
+.turnover-view-today {
+  width: 100%;
+  height: 166rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 30rpx;
+  color: #fff;
+  
+}
+
+
+.data-turnover {
+  width: 100%;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.turnover-price {
+  font-size: 60rpx;
 }

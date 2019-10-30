@@ -1,13 +1,14 @@
 // pages/cart/cart.js
 var common = require("../../utils/common.js");
 var network = require("../../utils/network.js");
-var tableId = wx.getStorageSync('tableId');
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    orderId: '',
     showModal: false,
     index: 0,
     text: "",
@@ -92,14 +93,13 @@ Page({
     // var shopList = [];
     // 获取购物车数据
     this.getList();
-
-    var that = this;
-
+    this.getOrderId();
   },
 
   //获取购物车列表
   getList: function() {
     let that = this;
+    var tableId = wx.getStorageSync('tableId');
     let url = '/cart/select'
 
     var params = {
@@ -330,81 +330,13 @@ Page({
   },
   //提交订单
   toPayOrder: function() {
-    var that = this;
-    if (this.data.goodsList.noSelect) {
-      common.showTip("请选择至少一件商品", "loading");
-      return;
+  let that = this;
+    let orderId = that.data.orderId;
+    if (orderId != '' || orderId.length > 0) {
+      that.addOrder();
+    } else {
+      that.createOrder();
     }
-    wx.showLoading();
-    // 重新计算价格，判断库存
-
-    var shopList = wx.getStorageSync('cartResult');
-    if (shopList.length == 0) {
-      common.showTip("请选择至少一件商品", "loading");
-      return;
-    }
-    var dishArray = new Array();
-    for (var i = 0; i < shopList.length; i++) {
-      var temp = {
-        cid: shopList[i].id,
-        dishId: shopList[i].dishId,
-        dishImage: shopList[i].dishImage,
-        dishName: shopList[i].dishName,
-        dishPrice: shopList[i].dishPrice,
-        number: shopList[i].number
-      }
-      dishArray.push(temp);
-      // }
-    }
-    // }
-    var remark = that.data.textAreaBlur;
-    let url = 'order/add'
-    var params = {
-      shopId: 1,
-      // openId: '',
-      tableId: tableId,
-      dishArray: dishArray,
-      remark: remark
-    }
-    let method = "POST";
-    wx.showLoading({
-        title: '加载中...',
-      }),
-      network.POST(url, params, method).then((res) => {
-        wx.hideLoading();
-        // console.log("返回值是：" + res.data);
-        if (res.data.code == 200) {
-          console.log('res.data.data :', res.data.data);
-          let orderId = res.data.data.orderId;
-          wx.setStorageSync('orderId', orderId);
-          that.navigateToPayOrder();
-        }
-      });
-    // wx.request({
-    //   url: 'https://api.cmdd.tech/api/orderItem/List',
-
-    //   data: {
-    //     orderItemList,
-    //     operateRemark
-    //   },
-    //   method: 'POST',
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success: function(res) {
-    //     // console.log("提交返回：" + res.data);
-    //     if (res.data.code == 200) {
-    //       common.showTip("提交成功", 'success');
-    //       if (res.data.msg) {
-    //         that.setData({
-    //           isLotteryCash: res.data.msg.isLotteryCash
-    //         })
-    //       }
-    //       that.navigateToPayOrder();
-    //     }
-    //   }
-    // });
-
   },
   /**
    * 口味弹窗
@@ -533,6 +465,128 @@ Page({
     this.setData({
       textAreaBlur: e.detail.value,
     })
+  },
+  //通过tableId获取orderId
+  getOrderId: function() {
+    var that = this;
+    var tableId = wx.getStorageSync('tableId');
+    var url = 'table/getOrderIdByTableId'
+    var params = {
+      shopId: 1,
+      tableId: tableId,
+    }
+    let method = "GET";
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        // console.log("返回值是：" + res.data);
+        if (res.data.code == 200) {
+          console.log('res.data.data :', res.data.data);
+          let orderId = res.data.data.orderId;
+          wx.setStorageSync('orderId', orderId);
+          that.setData({
+            orderId: orderId
+          })
+        }
+      });
+  },
+  //订菜
+  createOrder: function() {
+    var that = this;
+    var tableId = wx.getStorageSync('tableId');
+    if (this.data.goodsList.noSelect) {
+      common.showTip("请选择至少一件商品", "loading");
+      return;
+    }
+    var shopList = wx.getStorageSync('cartResult');
+    if (shopList.length == 0) {
+      common.showTip("请选择至少一件商品", "loading");
+      return;
+    }
+    var dishArray = new Array();
+    for (var i = 0; i < shopList.length; i++) {
+      var temp = {
+        cid: shopList[i].id,
+        dishId: shopList[i].dishId,
+        dishImage: shopList[i].dishImage,
+        dishName: shopList[i].dishName,
+        dishPrice: shopList[i].dishPrice,
+        number: shopList[i].number
+      }
+      dishArray.push(temp);
+    }
+    var remark = that.data.textAreaBlur;
+    var url = 'order/add'
+    var params = {
+      shopId: 1,
+      tableId: tableId,
+      dishArray: dishArray,
+      remark: remark
+    }
+    let method = "POST";
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        // console.log("返回值是：" + res.data);
+        if (res.data.code == 200) {
+          console.log('res.data.data :', res.data.data);
+          let orderId = res.data.data.orderId;
+          wx.setStorageSync('orderId', orderId);
+          that.navigateToPayOrder();
+        }
+      });
+  },
+  //加餐
+  addOrder: function() {
+    var that = this;
+    var tableId = wx.getStorageSync('tableId');
+    if (this.data.goodsList.noSelect) {
+      common.showTip("请选择至少一件商品", "loading");
+      return;
+    }
+    var shopList = wx.getStorageSync('cartResult');
+    if (shopList.length == 0) {
+      common.showTip("请选择至少一件商品", "loading");
+      return;
+    }
+    let orderId = that.data.orderId;
+    var dishArray = new Array();
+    for (var i = 0; i < shopList.length; i++) {
+      var temp = {
+        cid: shopList[i].id,
+        dishId: shopList[i].dishId,
+        dishImage: shopList[i].dishImage,
+        dishName: shopList[i].dishName,
+        dishPrice: shopList[i].dishPrice,
+        number: shopList[i].number
+      }
+      dishArray.push(temp);
+    }
+    var remark = that.data.textAreaBlur;
+
+    var url = 'table/increaseDish'
+    var params = {
+      shopId: 1,
+      orderId: orderId,
+      tableId: tableId,
+      dishArray: dishArray,
+      remark: remark
+    }
+    let method = "POST";
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        // console.log("返回值是：" + res.data);
+        if (res.data.code == 200) {
+          that.navigateToPayOrder();
+        }
+      });
   }
 
 })

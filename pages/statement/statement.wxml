@@ -1,19 +1,21 @@
 <!--pages/statement/statement.wxml-->
 <view class="container">
-  <view class="title">{{nowDate}}</view>
+  <view class="title">{{date}}</view>
   <view class="line"></view>
   <view class="best-view">
     <image class="best-icon" src="../images/boss_icon.png"></image>
     <text class="best-dishes">最佳菜品</text>
   </view>
   <view class="data-view">
-    <view class="pick-data">
-      本日 ▼
-    </view>
+    <picker bindchange="bindPickerChange" value="{{pickerIndex}}" range="{{times}}" range-key="time">
+      <view class="pick-data">
+        {{times[pickerIndex].time}} ▼
+      </view>
+    </picker>
 
     <view class="check-data">
       <image class="data-icon" src="../images/data_icon.png"></image>
-      <text class="data-text">2019/10/5——2019/10/5</text>
+      <text class="data-text">{{date}}——{{date}}</text>
     </view>
   </view>
   <view class="line"></view>
@@ -30,11 +32,34 @@
       <view class="dish-item">
         <view class="dish-name" style="margin-left:36rpx;">{{item.dishName}}</view>
         <view class="dish-right">
-          <view style="margin-right:168rpx;">{{item.name}}</view>
+          <view style="margin-right:168rpx;">{{item.price}}</view>
           <view>{{item.number}}</view>
         </view>
       </view>
       <view class="line"></view>
     </block>
   </view>
+  <block wx:if="{{timeId!=0}}">
+    <view class="turnover-view">
+      <view class="data-turnover" style="margin-left:99rpx;">
+        <text class="turnover-title">当日营业额</text>
+        <text class="turnover-price">￥{{today}}</text>
+      </view>
+
+      <view class="data-turnover" style="margin-right:99rpx;">
+        <view class="turnover-title">{{time}}营业额</view>
+        <view class="turnover-price">￥{{totalTurnover.price}}</view>
+      </view>
+
+    </view>
+  </block>
+  <block wx:else>
+    <view class="turnover-view-today">
+      <view class="data-turnover">
+        <view class="turnover-title">{{time}}营业额</view>
+        <view class="turnover-price">￥{{today}}</view>
+      </view>
+    </view>
+  </block>
+  <view class="line"></view>
 </view>

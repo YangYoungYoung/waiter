@@ -12,7 +12,7 @@
   /* top: 174px; */
   height: 100%;
   /* bottom: 46px; */
-  overflow: hidden;
+  overflow: hidden; 
   font-family:"微软雅黑";
 }
 
@@ -24,10 +24,10 @@
 
 .goods .menu-wrapper .menu-item {
   display: table;
-  width: 112rpx;
+  width: 160rpx;
   height: 108rpx;
   line-height: 28rpx;
-  padding: 0 24rpx;
+  /* padding: 0 24rpx; */
 }
 
 .goods .menu-wrapper .menu-item:current {
@@ -54,11 +54,13 @@
 
 .goods .menu-wrapper .menu-item .text {
   display: table-cell;
-  width: 112rpx;
+  width: 160rpx;
   vertical-align: middle;
   position: relative;
   font-size: 24rpx;
   border-bottom:2rpx solid rgba(7,17,27,0.1);
+  text-align: center;
+  
 }
 
 .goods .foods-wrapper {
@@ -78,8 +80,8 @@
 
 .goods .foods-wrapper .food-list .food-item {
   display: flex;
-  margin: 36rpx;
-  padding-bottom: 36rpx;
+  margin: 20rpx;
+  padding-bottom: 10rpx;
   position: relative;
   border-bottom:2rpx solid rgba(7,17,27,0.1);
 }

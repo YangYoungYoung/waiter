@@ -4,7 +4,7 @@
     <view class="menu-wrapper">
       <scroll-view scroll-y="true" style="height: 900rpx;">
         <view wx:for="{{goods}}" wx:key='id' class="menu-item border-1px" bindtap="selectMenu" data-item-index="{{index}}">
-          <view class="text">
+          <view class="text" style="{{item.select?'background-color:#fff':'background-color:#f3f5f7'}}">
             {{item.dishType}}
           </view>
         </view>

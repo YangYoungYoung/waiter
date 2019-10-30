@@ -14,7 +14,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    
+
+  },
+  onShow: function() {
     this.getOrderList();
   },
 
@@ -60,7 +62,7 @@ Page({
     })
   },
   //跳转到桌位列表
-  toTable:function(){
+  toTable: function() {
     //清除订单ID
     wx.removeStorageSync('orderId');
     wx.redirectTo({

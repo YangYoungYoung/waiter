@@ -6,8 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    peopleNumber: '', //就餐人数
-    tableId:'',
+    peopleNumber: 0, //就餐人数
+    tableId: '',
     showAction: false,
     floorId: '',
     tableSizeId: '',
@@ -75,11 +75,12 @@ Page({
    */
   onLoad: function(options) {
     var shopId = wx.getStorageSync('shopId');
+
+  },
+  onShow: function() {
     this.getFloor();
     this.getArea();
     this.getTableSize();
-  },
-  onShow: function() {
     this.getTableList();
   },
 
@@ -88,12 +89,18 @@ Page({
     let that = this;
     // console.log('picker发送选择改变，携带值为', e.detail.value);
     var id = that.data.floor[e.detail.value].id;
+    if (id == 0) {
+      id = ''
+    }
     console.log('picker发送选择改变，id携带值为', id);
     that.setData({
       pickerIndex: e.detail.value,
-      floorId: id
+      floorId: id,
+      areaId:'',
+      speId:''
     })
     that.onShow();
+    // that.getTableList();
   },
 
   //点击radio-group中的列表项事件
@@ -178,7 +185,7 @@ Page({
       tableSizeId: tableSizeId,
       tableSize: tableSize
     })
-    that.onShow();
+    that.getTableList();
   },
   //选择区域
   chooseArea: function(e) {
@@ -201,7 +208,7 @@ Page({
       area: area,
       areaId: areaId
     })
-    that.onShow();
+    that.getTableList();
   },
   //获取楼层
   getFloor: function(e) {
@@ -222,6 +229,12 @@ Page({
           let floor = res.data.data.floor;
           //楼层
           if (floor.length > 0) {
+            // for\
+            let obj = {
+              id: 0,
+              floor: '全部'
+            }
+            floor.unshift(obj);
             that.setData({
               floorSelect: true
             })
@@ -442,14 +455,15 @@ Page({
       case 4:
         //当前为订单详情
         console.log("当前为订单详情");
+        this.getOrderId();
         wx.navigateTo({
-          url: '../order/order',
+          url: '../form/form',
         })
         break;
       case 5:
         //当前为清台
         console.log("当前为清台");
-        that.clearDiningTable();
+        that.cleanTable();
         break;
       default:
         break;
@@ -502,13 +516,14 @@ Page({
     // let index = that.data.index;
     // let diningTableList = that.data.diningTableList;
     let peopleNumber = that.data.peopleNumber; //实际就餐人数
+
     let tableId = that.data.tableId;
     console.log('tableId is:', tableId);
     var params = {
       shopId: 1,
+      status: 1,
       population: peopleNumber,
-      status:1,
-      tableId: tableId                                
+      tableId: tableId
     }
     wx.showLoading({
         title: '加载中...',
@@ -539,5 +554,68 @@ Page({
     this.setData({
       peopleNumber: e.detail.value
     })
+  },
+  //清台的接口
+  cleanTable: function() {
+    let that = this;
+
+    let url = "table/cleanTable"
+    let method = "GET"
+    let tableId = that.data.tableId;
+    console.log('tableId is:', tableId);
+    var params = {
+      shopId: 1,
+
+      tableId: tableId
+    }
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        //后台交互
+        if (res.data.code == 200) {
+          common.showTip("清台成功", "success");
+          that.onShow();
+          that.onActionClose();
+        } else {
+          var message = res.data.message
+          common.showTip(message, "loading");
+        }
+      }).catch((errMsg) => {
+        wx.hideLoading();
+        console.log(errMsg); //错误提示信息
+        wx.showToast({
+          title: '网络错误',
+          icon: 'loading',
+          duration: 1500,
+        })
+      });
+  },
+  //通过tableId获取orderId
+  getOrderId: function() {
+    var that = this;
+    let tableId = that.data.tableId;
+    var url = 'table/getOrderIdByTableId'
+    var params = {
+      shopId: 1,
+      tableId: tableId,
+    }
+    let method = "GET";
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        // console.log("返回值是：" + res.data);
+        if (res.data.code == 200) {
+          console.log('res.data.data :', res.data.data);
+          let orderId = res.data.data.orderId;
+          wx.setStorageSync('orderId', orderId);
+          that.setData({
+            orderId: orderId
+          })
+        }
+      });
   },
 })

@@ -61,7 +61,7 @@
           <block wx:elif="{{item.status==2}}">
             <view class="table-item-dine" bindtap="showAction" data-id="{{item.id}}" data-status="{{item.status}}">
               <text class="table-name">{{item.tableName}}</text>
-              <text class="bottome-text" style="margin-top:30rpx;color:#a4144e">￥{{item.price}}/{{item.population}}人</text>
+              <text class="bottome-text" style="margin-top:30rpx;color:#a4144e">{{item.population}}人</text>
             </view>
           </block>
           <!-- 待清台 -->
