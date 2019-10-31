@@ -7,12 +7,15 @@ Page({
    */
   data: {
     peopleNumber: 0, //就餐人数
+    // areaIndex: 0, //区域索引
+    // tableSizeIndex: 0, //桌位类型索引、
+    // speId
     tableId: '',
     showAction: false,
     floorId: '',
-    tableSizeId: '',
+    tableSizeId: '', //桌位类型Id
     statusId: '',
-    areaId: '',
+    areaId: '', //区域Id
     // select: true,
     tableList: [],
     statusArray: [{
@@ -75,16 +78,16 @@ Page({
    */
   onLoad: function(options) {
     var shopId = wx.getStorageSync('shopId');
-
+    this.getFloor();
   },
   onShow: function() {
-    this.getFloor();
+
     this.getArea();
     this.getTableSize();
     this.getTableList();
   },
 
-  //选择不同的区域来查询桌位
+  //选择不同的楼层来查询桌位
   bindPickerChange: function(e) {
     let that = this;
     // console.log('picker发送选择改变，携带值为', e.detail.value);
@@ -96,8 +99,8 @@ Page({
     that.setData({
       pickerIndex: e.detail.value,
       floorId: id,
-      areaId:'',
-      speId:''
+      // areaId:'',
+      // speId:''
     })
     that.onShow();
     // that.getTableList();
@@ -156,9 +159,6 @@ Page({
           let area = res.data.data.area;
           that.setData({
             tableList: tableList,
-            // tableSize: tableSize,
-            // floor: floor,
-            // area: area
           })
         }
       });
@@ -183,7 +183,8 @@ Page({
     }
     that.setData({
       tableSizeId: tableSizeId,
-      tableSize: tableSize
+      tableSize: tableSize,
+      // tableSizeIndex: index
     })
     that.getTableList();
   },
@@ -191,11 +192,13 @@ Page({
   chooseArea: function(e) {
     let that = this;
     let areaId = e.currentTarget.dataset.id;
-
+    console.log('areaId is', areaId);
+    // var areaIndex = '';
     let area = that.data.area;
     for (var i = 0; i < area.length; i++) {
       if (area[i].id == areaId) {
         area[i].select = true
+        // areaIndex = i;
       } else {
         area[i].select = false
       }
@@ -203,11 +206,13 @@ Page({
     if (areaId == 0) {
       areaId = ''
     }
-    console.log('areaId is:', areaId);
+    // console.log('areaId is:', areaId);
     that.setData({
       area: area,
-      areaId: areaId
+      areaId: areaId,
+      // areaIndex: areaIndex
     })
+    that.getTableSize();
     that.getTableList();
   },
   //获取楼层
@@ -249,6 +254,8 @@ Page({
   getTableSize: function() {
     let that = this;
     let shopId = wx.getStorageSync('shopId');
+    let tableSizeId = that.data.tableSizeId;
+    console.log('tableSizeId is:', tableSizeId);
     let url = 'table/index/specification'
     var params = {
       shopId: 1,
@@ -263,15 +270,20 @@ Page({
         if (res.data.code == 200) {
           let tableSize = res.data.data.specification;
           if (tableSize.length > 0) {
-            for (var i = 0; i < tableSize.lenghth; i++) {
-              tableSize[i].select = false;
-            }
             let table = {
               id: 0,
               specification: '全部',
               select: true
             }
             tableSize.unshift(table);
+            for (var i = 0; i < tableSize.length; i++) {
+              if (tableSize[i].id == tableSizeId) {
+                tableSize[i].select = true;
+              } else {
+                tableSize[i].select = false;
+              }
+            }
+
             console.log('tableSize is:', tableSize);
           }
           that.setData({
@@ -284,6 +296,8 @@ Page({
   getArea: function() {
     let that = this;
     let shopId = wx.getStorageSync('shopId');
+    let areaId = that.data.areaId;
+    console.log('areaId is:', areaId);
     let url = 'table/index/area';
     let floorId = that.data.floorId;
 
@@ -302,15 +316,19 @@ Page({
           let area = res.data.data.area;
           //区域
           if (area.length > 0) {
-            for (var i = 0; i < area.lenghth; i++) {
-              area[i].select = false;
-            }
             let obj = {
               area: '全部',
               id: 0,
               select: true
             }
             area.unshift(obj);
+            for (var i = 0; i < area.length; i++) {
+              if (area[i].id == areaId) {
+                area[i].select = true;
+              } else {
+                area[i].select = false;
+              }
+            }
             console.log('area is:', area);
           }
           that.setData({

@@ -7,7 +7,24 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    show: false, //action是否显示
+    actions: [{
+        id: 1,
+        name: '上菜',
+        disabled: false
+      },
+      // {
+      //   id: 2,
+      //   name: '起菜',
+      //   disabled: false
+      // },
+      {
+        id: 2,
+        name: '退菜',
+        disabled: false
+      }
+    ],
+    dishIndex: ''
   },
 
   /**
@@ -68,5 +85,128 @@ Page({
     wx.redirectTo({
       url: '../table/table',
     })
+  },
+  //弹出action
+  onShowAciton(e) {
+    let that = this;
+    let index = e.currentTarget.dataset.index;
+    console.log('当前的index:', index);
+    that.setData({
+      show: true,
+      dishIndex: index
+    })
+  },
+  //关闭actionSheet
+  onClose() {
+    this.setData({
+      show: false
+    });
+  },
+  //选择actionSheet
+  onSelect(event) {
+    console.log(event.detail.id);
+    let id = event.detail.id;
+    let that = this;
+    switch (id) {
+
+      case 1:
+        //当前为划菜
+        console.log("当前为划菜");
+        that.serving();
+        that.onClose();
+        break;
+        // case 2:
+        //   //当前为起菜
+        //   console.log("当前为起菜");
+        //   that.onClose();
+        //   break;
+      case 2:
+        //当前为退菜
+        console.log("当前为退菜");
+        that.returnDish();
+        that.onClose();
+        break;
+      default:
+        break;
+    }
+  },
+  //起菜
+  serving: function() {
+    let that = this;
+    let dishIndex = that.data.dishIndex;
+    let orderList = that.data.orderList;
+    let shopId = wx.getStorageSync('shopId');
+    let orderId = wx.getStorageSync('orderId');
+    let dishId = orderList[dishIndex].dishId;
+    let url = 'order/changeStatusByOrderIdAndDishId';
+    let params = {
+      shopId: 1,
+      orderId: orderId,
+      dishId: dishId,
+      status: 2 //上菜的状态
+    }
+    let method = "GET";
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        // console.log("返回值是：" + res.data);
+        if (res.data.code == 200) {
+          common.showTip('成功', 'success');
+          console.log('res.data.data :', res.data.data);
+          that.getOrderList();
+        }
+      });
+  },
+  //退菜
+  returnDish: function () {
+    let that = this;
+    let orderId = wx.getStorageSync("orderId");
+    let dishIndex = that.data.dishIndex;
+    let orderList = that.data.orderList;
+    let dishId = orderList[dishIndex].dishId;
+    // let returnReason = that.data.returnReason;
+    // if (returnReason == '') {
+    //   common.showTip('请填写退菜原因', 'loading');
+    //   // wx.showToast({
+    //   //   title: '请填写退菜原因',
+    //   //   icon: 'loading',
+    //   //   duration: 1000
+    //   // })
+    //   return;
+    // }
+
+    let url = 'order/changeStatusByOrderIdAndDishId';
+    let params = {
+      shopId: 1,
+      orderId: orderId,
+      dishId: dishId,
+      status: 3 //退菜的状态
+    }
+    let method = "GET"
+    wx.showLoading({
+      title: '加载中...',
+    }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        if (res.data.code == 200) {
+          common.showTip('成功', 'success');
+          // loi[index].returnReason = returnReason;
+          // console.log("loi[index].returnReason :", loi[index].returnReason);
+          // that.setData({
+          //   loi: loi
+          // })
+          that.onShow();
+        }
+      }).catch((errMsg) => {
+        wx.hideLoading();
+        console.log(errMsg); //错误提示信息
+        wx.showToast({
+          title: '网络错误',
+          icon: 'loading',
+          duration: 1500,
+        })
+      });
   }
 })

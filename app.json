@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/table/table",
     "pages/statement/statement",
     "pages/form/form",
     "pages/cart/cart",
     "pages/menu/menu",
     "pages/login/login",
-    "pages/index/index",
     "pages/logs/logs"
   ],
   "window": {

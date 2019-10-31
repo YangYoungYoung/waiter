@@ -1,21 +1,78 @@
 /**index.wxss**/
-.userinfo {
+
+page {
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7;
+}
+
+.top-img {
+  width: 100%;
+  height: 330rpx;
+  margin-bottom: 48rpx;
+}
+
+.menu-item {
+  width: 678rpx;
+  height: 200rpx;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  background-color: #fff;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28rpx;
+  border-radius: 20rpx;
+}
+
+.menu-left {
+  margin-left: 60rpx;
+  display: flex;
+  flex-direction: row;
   align-items: center;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.menu-icon {
+  width: 82rpx;
+  height: 95rpx;
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.menu-info {
+  display: flex;
+  flex-direction: column;
+  height: 95rpx;
+  margin-left: 60rpx;
 }
 
-.usermotto {
-  margin-top: 200px;
+.menu-title {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.menu-content {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 30rpx;
+}
+
+.menu-right {
+  width: 14rpx;
+  margin-right: 48rpx;
+  height: 24rpx;
+}
+
+.contact-title {
+  font-size: 30rpx;
+  color: #333;
+  margin-top: 30rpx;
+  font-weight: bold;
+  text-align: left;
+  width: 678rpx;
+  margin-bottom: 30rpx;
+}
+
+.contact-item {
+  font-size: 28rpx;
+  width: 678rpx;
+  color: #999;
+  margin-bottom: 20rpx;
 }

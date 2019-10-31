@@ -1,13 +1,21 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
+  <image class="top-img" src="../images/banner.jpg"></image>
+  <block wx:for="{{menuList}}" wx:key='item'>
+    <view class="menu-item" bindtap="toIndex" data-index="{{index}}">
+      <view class="menu-left">
+        <image class="menu-icon" src="{{item.icon}}"></image>
+        <view class="menu-info">
+          <view class="menu-title">{{item.title}}</view>
+          <view class="menu-content">{{item.content}}</view>
+        </view>
+      </view>
+      <image class="menu-right" src="../images/right_icon.png"></image>
+    </view>
+  </block>
+  <view class="contact-title">联系方式</view>
+  <view class="contact-item">0311-88898818/0311-88818808</view>
+  <view class="contact-item">邮箱：hbcongyue@163.com</view>
+  <view class="contact-item">地址：河北省石家庄市新华区中储广场B座1908</view>
+  
 </view>
