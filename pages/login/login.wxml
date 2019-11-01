@@ -11,5 +11,5 @@
     <image class="name-icon" src="../images/pwd_icon.png"></image>
     <input class="name-input" placeholder='请输入密码' bindinput="getPwd" password='true'></input>
   </view>
-  <button class="submit">提交</button>
+  <button class="submit" bindtap="submit">提交</button>
 </view>
