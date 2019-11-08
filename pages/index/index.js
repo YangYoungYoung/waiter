@@ -13,8 +13,7 @@ Page({
         icon: '../images/turnover_icon.png',
         title: '营业额记录',
         content: '随时随地查看营业额',
-      },
-    
+      }, 
     ]
   },
   

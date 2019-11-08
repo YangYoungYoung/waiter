@@ -15,7 +15,7 @@
 
     <view class="check-data">
       <image class="data-icon" src="../images/data_icon.png"></image>
-      <text class="data-text">{{date}}——{{date}}</text>
+      <text class="data-text">{{date}}-{{date}}</text>
     </view>
   </view>
   <view class="line"></view>

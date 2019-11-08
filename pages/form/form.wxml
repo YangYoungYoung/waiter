@@ -34,6 +34,8 @@
       </view>
       <view class="foot-right-not" bindtap="toTable">首页</view>
       <view class="foot-right" bindtap="toAddOrder">加餐</view>
+
+      <view class="foot-right-reprint"  bindtap="printAll">打印</view>
     </view>
   </view>
   <van-action-sheet show="{{ show }}" actions="{{ actions }}" bind:close="onClose" bind:select="onSelect" cancel-text="取消" overlay="true" close-on-click-overlay="true" bind:cancel="onClose" />

@@ -6,6 +6,7 @@ Page({
   /**
    * 页面的初始数据
    */
+
   data: {
     name: '',
     pwd: ''
@@ -62,20 +63,25 @@ Page({
       network.POST(url, params, method).then((res) => {
         wx.hideLoading();
         console.log("返回值是：" + res.data);
-        let user = res.data.data;
-        let shopId = user.sid;
-        wx.setStorageSync('shopId', shopId);
-      let userType = user.userType;
-      //userType为用户身份：0：管理员，1：老板，2：服务员
-      if (userType!=2){
-        wx.redirectTo({
-          url: '../statement/statement',
-        })
-      }else{
-        wx.redirectTo({
-          url: '../table/table',
-        })
-      }
+        if (res.data.code == 200) {
+          let user = res.data.data.alluser;
+          let shopId = user.sid;
+          wx.setStorageSync('shopId', shopId);
+          let userType = user.userType;
+          //userType为用户身份：0：管理员，1：老板，2：服务员
+          if (userType != 2) {
+            wx.redirectTo({
+              url: '../index/index',
+            })
+          } else {
+            wx.redirectTo({
+              url: '../table/table',
+            })
+          }
+        }else{
+          let msg = res.data.errMsg;
+          common.showTip(msg,'loading');
+        }
 
       }).catch((errMsg) => {
         wx.hideLoading();

@@ -7,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    // isAllPrint: true,
+    totalPrice: 0,
     show: false, //action是否显示
     actions: [{
         id: 1,
@@ -64,6 +66,13 @@ Page({
           console.log('res.data.data :', res.data.data);
           let orderList = res.data.data.jsonArray;
           let totalPrice = res.data.data.totalPrice;
+          // for(var i = 0; i < orderList.length; i++) {
+          //   if(!orderList[i].isPrint){
+          //     that.setData({
+          //       isAllPrint:false
+          //     })
+          //   }
+          // }
           that.setData({
             orderList: orderList,
             totalPrice: totalPrice
@@ -160,22 +169,13 @@ Page({
       });
   },
   //退菜
-  returnDish: function () {
+  returnDish: function() {
     let that = this;
     let orderId = wx.getStorageSync("orderId");
     let dishIndex = that.data.dishIndex;
     let orderList = that.data.orderList;
     let dishId = orderList[dishIndex].dishId;
-    // let returnReason = that.data.returnReason;
-    // if (returnReason == '') {
-    //   common.showTip('请填写退菜原因', 'loading');
-    //   // wx.showToast({
-    //   //   title: '请填写退菜原因',
-    //   //   icon: 'loading',
-    //   //   duration: 1000
-    //   // })
-    //   return;
-    // }
+    
 
     let url = 'order/changeStatusByOrderIdAndDishId';
     let params = {
@@ -186,8 +186,8 @@ Page({
     }
     let method = "GET"
     wx.showLoading({
-      title: '加载中...',
-    }),
+        title: '加载中...',
+      }),
       network.POST(url, params, method).then((res) => {
         wx.hideLoading();
         if (res.data.code == 200) {
@@ -208,5 +208,64 @@ Page({
           duration: 1500,
         })
       });
-  }
+  },
+  //全部打印
+  printAll: function() {
+    let that = this;
+    let orderId = wx.getStorageSync("orderId");
+    let url = 'print/sendMsgAll';
+    let params = {
+      shopId: 1,
+      orderId: orderId,
+
+    }
+    let method = "GET"
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        if (res.data.code == 200) {
+          common.showTip('成功', 'success');
+
+        }
+      }).catch((errMsg) => {
+        wx.hideLoading();
+        console.log(errMsg); //错误提示信息
+        wx.showToast({
+          title: '网络错误',
+          icon: 'loading',
+          duration: 1500,
+        })
+      });
+  },
+  //打印部分菜品
+  printDishs: function() {
+    let url = 'print/sendMsg';
+    let params = {
+      shopId: 1,
+      orderId: orderId,
+
+    }
+    let method = "GET"
+    wx.showLoading({
+        title: '加载中...',
+      }),
+      network.POST(url, params, method).then((res) => {
+        wx.hideLoading();
+        if (res.data.code == 200) {
+          common.showTip('成功', 'success');
+
+        }
+      }).catch((errMsg) => {
+        wx.hideLoading();
+        console.log(errMsg); //错误提示信息
+        wx.showToast({
+          title: '网络错误',
+          icon: 'loading',
+          duration: 1500,
+        })
+      });
+  },
+
 })

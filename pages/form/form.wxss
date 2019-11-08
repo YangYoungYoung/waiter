@@ -141,6 +141,17 @@
   font-size: 30rpx;
 }
 
+.foot-right-reprint{
+  height: 100%;
+
+  width: 200rpx;
+  background-color: #F23A3A;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 34rpx;
+  color: #fff;
+}
+
 .name-price {
   margin-left: 20rpx;
   display: flex;
