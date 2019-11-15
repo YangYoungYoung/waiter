@@ -135,7 +135,7 @@
 .foot-right-not {
   width: 200rpx;
   height: 100rpx;
-  background-color: #98dbf9;
+  background-color: #afd08b;
   text-align: center;
   line-height: 100rpx;
   font-size: 30rpx;

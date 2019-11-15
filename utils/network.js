@@ -3,11 +3,18 @@ const app = getApp()
 
 // var API_URL = 'https://api.ugo365.xyz/api/';
 // var API_URL = 'http://192.168.5.172:8080/';
-var API_URL = 'https://192.168.5.173:443/';
+// var API_URL = 'https://192.168.5.173:443/';
 
-// var API_URL = 'https://www.congyue88.com/congyue/';
+var API_URL = 'https://repast.congyue88.com/repast/';
 // var API_URL = 'https://shop.congyue88.com/congyue/';
 // var API_URL = 'http://62.234.16.210:8080/congyue/';
+
+
+
+
+
+
+
 var defaulContentType = 'application/x-www-form-urlencoded; charset=UTF-8';
 
 function POST(url, params, method, contenTTypeCust) {

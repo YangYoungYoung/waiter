@@ -13,13 +13,13 @@
         </view>
         <!-- <view class="item-right"> -->
         <block wx:if='{{item.status==0}}'>
-          <view class="item-right" style="background-color:#64e291">已出单</view>
+          <view class="item-right" style="background-color:#a05265">已出单</view>
         </block>
         <block wx:elif='{{item.status==1}}'>
-          <view class="item-right" style="background-color:#e86458">正在做</view>
+          <view class="item-right" style="background-color:#f23a3a">正在做</view>
         </block>
         <block wx:elif='{{item.status==2}}'>
-          <view class="item-right" style="background-color:#ffd369">已上菜</view>
+          <view class="item-right" style="background-color:#327376">已上菜</view>
         </block>
         <block wx:else>
           <view class="item-right" style="background-color:#999999">已退菜</view>

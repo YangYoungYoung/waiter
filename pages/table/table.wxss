@@ -105,9 +105,9 @@ page {
   margin-top: 30rpx;
   width: 300rpx;
   height: 200rpx;
-  background-color: #adeb6b;
+  background-color: #afd08b;
   border-radius: 10rpx;
-  border: solid 1rpx #8bbd56;
+  border: solid 1rpx #afd08b;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,9 +117,9 @@ page {
   margin-top: 30rpx;
   width: 300rpx;
   height: 200rpx;
-  background-color: #98dbf9;
+  background-color: #54a3c2;
   border-radius: 10rpx;
-  border: solid 1rpx #8bbd56;
+  border: solid 1rpx #54a3c2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,9 +129,9 @@ page {
   margin-top: 30rpx;
   width: 300rpx;
   height: 200rpx;
-  background-color: #fada85;
+  background-color: #f7e2ab;
   border-radius: 10rpx;
-  border: solid 1rpx #8bbd56;
+  border: solid 1rpx #f7e2ab;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -141,9 +141,9 @@ page {
   margin-top: 30rpx;
   width: 300rpx;
   height: 200rpx;
-  background-color: #f4eb5e;
+  background-color: #fcca69;
   border-radius: 10rpx;
-  border: solid 1rpx #8bbd56;
+  border: solid 1rpx #fcca69;
   display: flex;
   flex-direction: column;
   align-items: center;

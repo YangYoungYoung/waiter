@@ -227,7 +227,10 @@ Page({
         wx.hideLoading();
         if (res.data.code == 200) {
           common.showTip('成功', 'success');
-
+        }
+        else{
+          let msg = res.data.errMsg;
+          common.showTip(msg, 'loading');
         }
       }).catch((errMsg) => {
         wx.hideLoading();

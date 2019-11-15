@@ -398,9 +398,9 @@ Page({
       for (var i = 0; i < actions.length; i++) {
 
         if (i != 4) {
-          actions[i].disabled = false;
-        } else {
           actions[i].disabled = true;
+        } else {
+          actions[i].disabled = false;
         }
       }
       that.setData({
